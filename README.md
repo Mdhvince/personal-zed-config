@@ -1,9 +1,9 @@
-# zed-config
+# personal-zed-config
 
 ## macOS
 
 ```bash
-brew install git gh
+brew install git
 brew install --cask zed ollama-app font-inter font-jetbrains-mono
 export PATH="/Applications/Ollama.app/Contents/Resources:$PATH"
 ```
@@ -12,7 +12,6 @@ export PATH="/Applications/Ollama.app/Contents/Resources:$PATH"
 
 ```powershell
 winget install --exact --id Git.Git --source winget
-winget install --exact --id GitHub.cli --source winget
 winget install --exact --id ZedIndustries.Zed --source winget
 winget install --exact --id Ollama.Ollama --source winget
 ```
@@ -23,7 +22,7 @@ Rouvrir PowerShell après l'installation.
 
 ```bash
 sudo apt-get update
-sudo apt-get install -y git gh curl ca-certificates libvulkan1 mesa-vulkan-drivers
+sudo apt-get install -y git curl ca-certificates libvulkan1 mesa-vulkan-drivers
 curl -fsSL https://zed.dev/install.sh | sh
 curl -fsSL https://ollama.com/install.sh | sh
 ```
@@ -34,27 +33,23 @@ Sur Windows/Linux, installer aussi **Inter Variable** et **JetBrains Mono** depu
 
 Fermer Zed. Le dossier cible doit être absent ou vide. S'il contient une ancienne configuration, le sauvegarder et le renommer avant le clonage.
 
-Se connecter au compte GitHub ayant accès au dépôt privé :
-
-```bash
-gh auth login --hostname github.com --git-protocol https --web
-```
+Le dépôt est public : aucune connexion GitHub n'est nécessaire.
 
 Exécuter uniquement la commande correspondant au système :
 
 ```bash
 # macOS
-gh repo clone Mdhvince/zed-config "$HOME/.config/zed"
+git clone https://github.com/Mdhvince/personal-zed-config.git "$HOME/.config/zed"
 ```
 
 ```powershell
 # Windows
-gh repo clone Mdhvince/zed-config "$env:APPDATA\Zed"
+git clone https://github.com/Mdhvince/personal-zed-config.git "$env:APPDATA\Zed"
 ```
 
 ```bash
 # Linux
-gh repo clone Mdhvince/zed-config "${XDG_CONFIG_HOME:-$HOME/.config}/zed"
+git clone https://github.com/Mdhvince/personal-zed-config.git "${XDG_CONFIG_HOME:-$HOME/.config}/zed"
 ```
 
 ### 3. Installer les modèles locaux
