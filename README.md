@@ -1,14 +1,6 @@
 # zed-config
 
-**Ce Mac est la seule source de modifications. Les autres PC récupèrent la configuration, sans la modifier ni la pousser.**
-
-Le dépôt est directement dans le dossier utilisé par Zed : aucune copie supplémentaire.
-
-## Installer sur un autre PC
-
-### 1. Installer les outils
-
-macOS, avec [Homebrew](https://brew.sh/) :
+## macOS
 
 ```bash
 brew install git gh
@@ -16,7 +8,7 @@ brew install --cask zed ollama-app font-inter font-jetbrains-mono
 export PATH="/Applications/Ollama.app/Contents/Resources:$PATH"
 ```
 
-Windows, avec WinGet dans PowerShell :
+## Windows, avec WinGet dans PowerShell :
 
 ```powershell
 winget install --exact --id Git.Git --source winget
@@ -27,7 +19,7 @@ winget install --exact --id Ollama.Ollama --source winget
 
 Rouvrir PowerShell après l'installation.
 
-Ubuntu / Debian :
+## Ubuntu / Debian :
 
 ```bash
 sudo apt-get update
@@ -75,26 +67,3 @@ ollama pull qwen2.5-coder:7b-instruct
 ```
 
 Les deux modèles occupent environ 9,4 Go. Ouvrir ensuite Zed ; l'extension JetBrains Icons s'installe automatiquement.
-
-## Publier depuis ce Mac uniquement
-
-Vérifier `git diff HEAD` avant publication : aucun mot de passe, jeton ou clé API ne doit être ajouté.
-
-```bash
-cd "$HOME/.config/zed"
-git add -u
-git commit -m "Update Zed configuration"
-git push
-```
-
-## Mettre à jour les autres PC
-
-Fermer Zed, ouvrir un terminal dans le dossier cloné, puis :
-
-```bash
-git pull --ff-only
-```
-
-Rouvrir Zed. Rien à recopier, aucun commit ni push à faire sur ces PC.
-
-Sur un ordinateur client, respecter les autorisations d'installation. Les sauvegardes et autres fichiers locaux sont exclus par `.gitignore`, pas les secrets éventuellement ajoutés à un fichier suivi.
