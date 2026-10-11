@@ -20,14 +20,14 @@
   },
   {
     "bindings": {
-      "cmd-[": "agent::Toggle",
-      "cmd-]": "multi_workspace::ToggleWorkspaceSidebar"
+      "secondary-[": "agent::Toggle",
+      "secondary-]": "multi_workspace::ToggleWorkspaceSidebar"
     }
   },
   {
     "context": "Workspace",
     "bindings": {
-      "cmd-shift-t": "terminal_panel::Toggle"
+      "secondary-shift-t": "terminal_panel::Toggle"
     }
   },
   {

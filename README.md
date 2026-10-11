@@ -2,14 +2,22 @@
 
 Configuration personnelle de Zed, avec une installation sur macOS, Windows et Linux Ubuntu/Debian.
 
-Le compte Zed ne synchronise pas ces fichiers. Le dépôt sert à les transférer ; il ne synchronise pas automatiquement les changements effectués dans Zed.
+**Le dépôt Git est directement le dossier de configuration utilisé par Zed.** Il n'y a pas de copie à exporter ou à maintenir ailleurs. Une modification faite dans Zed apparaît dans `git diff` ; un `git pull` met à jour les mêmes fichiers.
+
+| Système | Dossier du dépôt et de la configuration |
+| --- | --- |
+| macOS | `~/.config/zed` |
+| Windows | `%APPDATA%\Zed` |
+| Linux | `~/.config/zed`, ou `$XDG_CONFIG_HOME/zed` si cette variable est définie |
+
+Le compte Zed ne synchronise pas ces fichiers. Utiliser les commandes Git décrites ci-dessous pour partager les changements entre machines.
 
 ## Contenu
 
 | Fichier | Rôle |
 | --- | --- |
 | `settings.json` | Apparence Fleet, polices, Python, modèles Ollama et installation automatique de JetBrains Icons |
-| `keymap.json` | Raccourcis personnels, avec Cmd sur macOS |
+| `keymap.json` | Raccourcis personnels avec `secondary-` : Cmd sur macOS, Ctrl sur Windows/Linux |
 | `themes/fleet-dark-edited.json` | Thème Fleet Dark - Edited |
 | `snippets/python.json` | Snippets `main`, `mark`, `patch` et `dsp` |
 
@@ -28,10 +36,12 @@ Version de référence de la configuration : Zed 1.23.2. Les commandes ci-dessou
 1. Sur un ordinateur client, obtenir l'autorisation d'installer Zed, Ollama et des modèles IA. Ne pas contourner les restrictions de l'entreprise.
 2. Disposer d'un compte GitHub autorisé à lire le dépôt privé `Mdhvince/zed-config`.
 3. Prévoir une connexion Internet pour l'installation et environ **9,4 Go pour les modèles**, en plus des applications et des polices. La RAM et le GPU déterminent les performances ; les deux modèles 7B ne seront pas aussi rapides sur tous les PC.
-4. Fermer Zed avant de copier la configuration. Les procédures sauvegardent une configuration existante **hors du dépôt**, puis remplacent seulement les quatre fichiers de configuration listés ci-dessus.
+4. Fermer Zed avant le premier clonage. Si une configuration existe déjà, son dossier est déplacé dans une sauvegarde **hors du dépôt** avant de cloner. Les éventuels fichiers personnels non versionnés restent dans cette sauvegarde et peuvent être récupérés ensuite.
 5. Suivre uniquement la section correspondant au système, dans l'ordre. En cas d'erreur, arrêter la procédure et corriger l'erreur avant de poursuivre.
 
-Les chemins documentés sont ceux d'une installation standard. Adapter la destination si Zed utilise un répertoire de configuration personnalisé. Ne pas appliquer la copie ci-dessous à une configuration gérée par des liens symboliques ou des jonctions : utiliser son gestionnaire existant.
+Les chemins documentés sont ceux d'une installation standard. Adapter la destination si Zed utilise un répertoire personnalisé. Pour une configuration gérée par des liens symboliques, des jonctions ou un autre dépôt Git, conserver son gestionnaire existant plutôt que remplacer son dossier.
+
+Si le clonage échoue, arrêter la procédure. La configuration précédente reste au chemin de sauvegarde affiché ; la remettre en place avant de rouvrir Zed si nécessaire. Ne supprimer aucune sauvegarde pour résoudre une erreur de clonage.
 
 Les interpréteurs Python et les dépendances de chaque projet, notamment pytest ou Spark, restent à installer selon les instructions du projet.
 
@@ -66,45 +76,32 @@ brew install --cask zed ollama-app font-inter font-jetbrains-mono
 
 Utiliser le cask `ollama-app`, pas une seconde installation indépendante du serveur Ollama. Si une application est déjà installée, conserver une seule installation et vérifier son fonctionnement avant de continuer.
 
-### 2. Se connecter à GitHub et cloner
+### 2. Cloner directement dans la configuration Zed
 
-La connexion ouvre le navigateur. Utiliser le compte ayant accès au dépôt privé.
+Fermer Zed. La connexion GitHub ouvre le navigateur ; utiliser le compte ayant accès au dépôt privé.
 
 ```bash
 (
   set -eu
   gh auth login --hostname github.com --git-protocol https --web
-  mkdir -p "$HOME/personal_projects"
-  gh repo clone Mdhvince/zed-config "$HOME/personal_projects/zed-config"
-)
-```
-
-Si le dossier cible existe déjà, ne pas le supprimer. Utiliser la section « Mettre à jour » ou choisir un autre chemin pour le clone.
-
-### 3. Sauvegarder et copier les réglages
-
-Fermer Zed, puis exécuter :
-
-```bash
-(
-  set -eu
-  cd "$HOME/personal_projects/zed-config"
   config="$HOME/.config/zed"
 
+  if [ -e "$config/.git" ]; then
+    printf 'A Git repository already exists here. Use the update section.\n' >&2
+    exit 1
+  fi
+  mkdir -p "$(dirname "$config")"
   if [ -d "$config" ]; then
     backup="$(mktemp -d "${config}.backup.XXXXXX")"
-    cp -a "$config/." "$backup/"
-    printf 'Backup: %s\n' "$backup"
+    mv "$config" "$backup/zed"
+    printf 'Previous configuration: %s/zed\n' "$backup"
   fi
 
-  mkdir -p "$config/themes" "$config/snippets"
-  cp settings.json keymap.json "$config/"
-  cp themes/fleet-dark-edited.json "$config/themes/"
-  cp snippets/python.json "$config/snippets/"
+  gh repo clone Mdhvince/zed-config "$config"
 )
 ```
 
-### 4. Démarrer Ollama et télécharger les modèles
+### 3. Démarrer Ollama et télécharger les modèles
 
 ```bash
 open -a Ollama
@@ -125,7 +122,7 @@ Utiliser le CLI inclus dans l'application, pour éviter une éventuelle autre ve
 )
 ```
 
-### 5. Ouvrir Zed
+### 4. Ouvrir Zed
 
 ```bash
 open -a Zed
@@ -150,7 +147,9 @@ Accepter les demandes d'installation autorisées par l'entreprise. Si un paquet 
 
 **Fermer puis rouvrir PowerShell** pour actualiser le PATH.
 
-### 2. Se connecter à GitHub et cloner
+### 2. Cloner directement dans la configuration Zed
+
+Fermer Zed avant cette étape.
 
 ```powershell
 $ErrorActionPreference = "Stop"
@@ -160,11 +159,18 @@ gh --version
 gh auth login --hostname github.com --git-protocol https --web
 if ($LASTEXITCODE -ne 0) { throw "GitHub authentication failed" }
 
-$repo = Join-Path $HOME "personal_projects\zed-config"
-if (Test-Path -LiteralPath $repo) { throw "Clone directory already exists: $repo" }
-New-Item -ItemType Directory -Force -Path (Split-Path $repo) | Out-Null
-gh repo clone Mdhvince/zed-config $repo
-if ($LASTEXITCODE -ne 0) { throw "Repository clone failed" }
+$config = Join-Path $env:APPDATA "Zed"
+if (Test-Path -LiteralPath "$config\.git") {
+    throw "A Git repository already exists here. Use the update section."
+}
+if (Test-Path -LiteralPath $config) {
+    $backup = $config + ".backup." + [guid]::NewGuid().ToString("N")
+    Move-Item -LiteralPath $config -Destination $backup
+    Write-Host "Previous configuration: $backup"
+}
+New-Item -ItemType Directory -Force -Path (Split-Path $config) | Out-Null
+gh repo clone Mdhvince/zed-config $config
+if ($LASTEXITCODE -ne 0) { throw "Repository clone failed; preserve the previous configuration backup" }
 ```
 
 ### 3. Installer les polices pour l'utilisateur courant
@@ -201,32 +207,7 @@ foreach ($font in $fonts) {
 
 Fermer puis rouvrir Zed après cette étape. Si les polices ne sont pas reconnues, enregistrer le travail en cours puis fermer et rouvrir la session Windows.
 
-### 4. Sauvegarder et copier les réglages
-
-Fermer Zed. Cette étape convertit les raccourcis `cmd-` en `ctrl-` **dans la copie installée**, sans modifier les fichiers du dépôt.
-
-```powershell
-$ErrorActionPreference = "Stop"
-$repo = Join-Path $HOME "personal_projects\zed-config"
-$config = Join-Path $env:APPDATA "Zed"
-
-if (Test-Path -LiteralPath $config) {
-    $backup = $config + ".backup." + [guid]::NewGuid().ToString("N")
-    Copy-Item -LiteralPath $config -Destination $backup -Recurse -ErrorAction Stop
-    Write-Host "Backup: $backup"
-}
-
-New-Item -ItemType Directory -Force -Path $config, "$config\themes", "$config\snippets" | Out-Null
-Copy-Item -Path "$repo\settings.json", "$repo\keymap.json" -Destination $config -Force
-Copy-Item "$repo\themes\fleet-dark-edited.json" -Destination "$config\themes" -Force
-Copy-Item "$repo\snippets\python.json" -Destination "$config\snippets" -Force
-
-$keymap = [System.IO.File]::ReadAllText("$config\keymap.json")
-$keymap = $keymap.Replace('"cmd-', '"ctrl-')
-[System.IO.File]::WriteAllText("$config\keymap.json", $keymap, [System.Text.UTF8Encoding]::new($false))
-```
-
-### 5. Vérifier Ollama et télécharger les modèles
+### 4. Vérifier Ollama et télécharger les modèles
 
 L'installateur Ollama lance normalement le serveur en arrière-plan. Vérifier qu'il répond :
 
@@ -246,7 +227,7 @@ if ($LASTEXITCODE -ne 0) { throw "Commit model download failed" }
 ollama list
 ```
 
-### 6. Ouvrir Zed
+### 5. Ouvrir Zed
 
 ```powershell
 zed
@@ -313,42 +294,32 @@ export PATH="$HOME/.local/bin:$PATH"
 
 Les deux dernières commandes doivent identifier les familles demandées, et non une police de remplacement.
 
-### 3. Se connecter à GitHub et cloner
+### 3. Cloner directement dans la configuration Zed
+
+Fermer Zed, puis exécuter :
 
 ```bash
 (
   set -eu
   gh auth login --hostname github.com --git-protocol https --web
-  mkdir -p "$HOME/personal_projects"
-  gh repo clone Mdhvince/zed-config "$HOME/personal_projects/zed-config"
-)
-```
-
-### 4. Sauvegarder et copier les réglages
-
-Fermer Zed. Comme sous Windows, les raccourcis Cmd sont convertis en Ctrl dans la copie installée.
-
-```bash
-(
-  set -eu
-  cd "$HOME/personal_projects/zed-config"
   config="${XDG_CONFIG_HOME:-$HOME/.config}/zed"
 
+  if [ -e "$config/.git" ]; then
+    printf 'A Git repository already exists here. Use the update section.\n' >&2
+    exit 1
+  fi
+  mkdir -p "$(dirname "$config")"
   if [ -d "$config" ]; then
     backup="$(mktemp -d "${config}.backup.XXXXXX")"
-    cp -a "$config/." "$backup/"
-    printf 'Backup: %s\n' "$backup"
+    mv "$config" "$backup/zed"
+    printf 'Previous configuration: %s/zed\n' "$backup"
   fi
 
-  mkdir -p "$config/themes" "$config/snippets"
-  cp settings.json keymap.json "$config/"
-  cp themes/fleet-dark-edited.json "$config/themes/"
-  cp snippets/python.json "$config/snippets/"
-  sed -i 's/"cmd-/"ctrl-/g' "$config/keymap.json"
+  gh repo clone Mdhvince/zed-config "$config"
 )
 ```
 
-### 5. Démarrer Ollama et télécharger les modèles
+### 4. Démarrer Ollama et télécharger les modèles
 
 Sur un système avec systemd :
 
@@ -368,7 +339,7 @@ Attendre que l'API réponde. Si systemd n'est pas disponible, lancer `ollama ser
 )
 ```
 
-### 6. Ouvrir Zed
+### 5. Ouvrir Zed
 
 ```bash
 zed
@@ -377,7 +348,7 @@ zed
 ## Vérifier l'installation
 
 1. Laisser Zed installer **JetBrains Icons**. Vérifier le thème **Fleet Dark - Edited**, les icônes et les polices dans les réglages. Le flou et la transparence dépendent du système et de son compositeur : le rendu n'est pas garanti identique à macOS.
-2. Vérifier les raccourcis : **Cmd+[ / Ctrl+[** ouvre le panneau Agent ; **Cmd+] / Ctrl+]** ouvre la barre latérale des espaces de travail ; **Cmd+Shift+T / Ctrl+Shift+T** affiche le panneau Terminal. Ils remplacent les raccourcis par défaut qui utilisent les mêmes touches.
+2. Vérifier les raccourcis : **Cmd+[ / Ctrl+[** ouvre le panneau Agent ; **Cmd+] / Ctrl+]** ouvre la barre latérale des espaces de travail ; **Cmd+Shift+T / Ctrl+Shift+T** affiche le panneau Terminal. Le modificateur natif `secondary-` choisit Cmd ou Ctrl selon le système : aucune réécriture locale du fichier n'est nécessaire. Ces raccourcis remplacent ceux par défaut qui utilisent les mêmes touches.
 3. Ouvrir un fichier Python et tester les snippets `main`, `mark`, `patch` et `dsp`. Ce sont des modèles éditables, sans imports automatiques. Le snippet `dsp` contient deux champs de schéma pour trois valeurs par ligne : adapter le schéma avant exécution.
 4. Laisser Ollama fonctionner. Commencer à écrire du code et attendre une suggestion d'autocomplétion ; **Tab** l'accepte. Zed peut aussi télécharger les composants nécessaires au langage, notamment basedpyright pour Python.
 5. Dans un dépôt avec une modification, tester **Generate Commit Message**, puis relire le texte. Cette action génère le message ; elle ne crée pas le commit. Le premier appel peut être plus lent pendant le chargement du modèle.
@@ -390,34 +361,70 @@ Zed utilise son prompt natif : message court et clair, sujet à l'impératif, co
 
 Le générateur n'impose pas de trailer IA tel que « Generated by Qwen ». Zed peut ajouter un `Co-authored-by:` pour les collaborateurs d'une session partagée. Des règles ou hooks propres au projet peuvent produire d'autres trailers.
 
-## Mettre à jour
+## Modifier et synchroniser les réglages
 
-Le dépôt et la configuration installée sont deux copies distinctes. Reporter les changements souhaités dans les fichiers versionnés ; ne pas recopier tout le dossier de configuration Zed dans Git.
+Modifier les réglages directement dans Zed, ou ouvrir les fichiers de ce dossier. Ils sont déjà les fichiers suivis par Git : aucune copie n'est nécessaire.
 
-Pour récupérer les réglages du dépôt, fermer Zed, puis :
+Se placer dans le dépôt correspondant au système :
+
+macOS :
 
 ```bash
-cd "$HOME/personal_projects/zed-config"
-git pull --ff-only
+cd "$HOME/.config/zed"
 ```
 
-Sous PowerShell :
+Windows :
 
 ```powershell
-Set-Location (Join-Path $HOME "personal_projects\zed-config")
+Set-Location (Join-Path $env:APPDATA "Zed")
+```
+
+Linux :
+
+```bash
+cd "${XDG_CONFIG_HOME:-$HOME/.config}/zed"
+```
+
+Vérifier une fois que `origin` est bien `Mdhvince/zed-config` :
+
+```bash
+git remote -v
+```
+
+### Envoyer les changements
+
+Examiner le diff et retirer tout secret ou information confidentielle avant de préparer le commit. Adapter le message au changement effectué.
+
+```bash
+git status --short
+git diff
+git add -- settings.json keymap.json themes/fleet-dark-edited.json snippets/python.json README.md .gitignore
+git diff --cached
+git commit -m "Adjust Zed preferences"
+git push
+```
+
+Ces commandes Git fonctionnent aussi dans PowerShell. Ne pas forcer l'ajout de fichiers ignorés avec `git add -f`.
+
+### Récupérer les changements sur une autre machine
+
+Fermer Zed et vérifier que le dossier de travail ne contient pas de changements à conserver avant le pull :
+
+```bash
+git status --short
 git pull --ff-only
 ```
 
-Relancer ensuite **l'étape de sauvegarde et de copie** correspondant au système. Elle conserve une sauvegarde locale et réapplique la conversion Cmd vers Ctrl sur Windows/Linux. Conserver `auto_install_extensions.jetbrains-icons` dans les réglages exportés.
+Si des changements locaux sont présents, les examiner et les enregistrer avant de poursuivre. Si Git signale un conflit ou refuse le pull, arrêter et résoudre la divergence ; ne pas utiliser `git reset --hard` pour contourner le problème.
 
-Avant tout commit de configuration, examiner les fichiers et le diff pour rechercher des secrets ou des informations propres à un client. `.gitignore` limite les fichiers acceptés, mais ne détecte pas les secrets ajoutés à un fichier déjà suivi.
+Rouvrir Zed. Il lit directement les fichiers mis à jour : il n'y a aucune étape de recopie. `.gitignore` limite les fichiers acceptés, mais ne détecte pas les secrets ajoutés à un fichier déjà suivi.
 
 ## Sécurité et limites
 
 - Ne jamais versionner de mot de passe, clé API, jeton, clé SSH privée, fichier `.env` ou configuration confidentielle d'un client, même dans un dépôt privé.
 - L'authentification GitHub est gérée séparément par `gh`, hors de ce dépôt. Ne pas copier son stockage d'identifiants, le trousseau système, les sessions Zed, les logs ou les sauvegardes dans le dépôt.
 - Les copies de sauvegarde peuvent contenir des données sensibles. Elles restent sur la machine et ne doivent pas être publiées.
-- Les paramètres IA exportés pointent uniquement vers le serveur Ollama local pour l'autocomplétion et les messages de commit. Garder cette adresse locale sauf accord explicite pour un autre service.
+- Les paramètres IA pointent uniquement vers le serveur Ollama local pour l'autocomplétion et les messages de commit. Garder cette adresse locale sauf accord explicite pour un autre service.
 - Les commandes Windows et Linux doivent être vérifiées sur les machines cibles. Les restrictions de l'entreprise, les pilotes et les droits d'installation peuvent nécessiter une intervention de l'administrateur.
 
 ## Sources
