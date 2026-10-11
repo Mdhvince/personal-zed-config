@@ -1,0 +1,176 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+  "toolbar": {
+    "code_actions": false,
+    "agent_review": true,
+    "selections_menu": true,
+    "breadcrumbs": false,
+    "quick_actions": false
+  },
+  "git": {
+    "diff_base": "head"
+  },
+  "debugger": {
+    "dock": "bottom"
+  },
+  "lsp": {
+    "basedpyright": {
+      "settings": {
+        "basedpyright": {
+          "analysis": {
+            "autoImportCompletions": false
+          }
+        }
+      }
+    }
+  },
+  "languages": {
+    "Python": {
+      "inlay_hints": {
+        "show_background": false,
+        "show_type_hints": true,
+        "show_value_hints": true,
+        "enabled": false
+      },
+      "remove_trailing_whitespace_on_save": true,
+      "indent_guides": {
+        "coloring": "fixed",
+        "line_width": 1,
+        "enabled": true
+      },
+      "preferred_line_length": 121
+    }
+  },
+  "cursor_shape": "block",
+  "cursor_animation": {
+    "enabled": false
+  },
+  "cursor_blink": true,
+  "accessible_mode": false,
+  "project_panel": {
+    "dock": "left"
+  },
+  "outline_panel": {
+    "button": false,
+    "dock": "left"
+  },
+  "collaboration_panel": {
+    "dock": "left"
+  },
+  "git_panel": {
+    "dock": "left"
+  },
+  "tabs": {
+    "file_icons": true,
+    "git_status": true
+  },
+  "tab_bar": {
+    "show_pinned_tabs_in_separate_row": false,
+    "show": true
+  },
+  "title_bar": {
+    "show_branch_status_icon": false,
+    "show_menus": true
+  },
+  "language_models": {
+    "ollama": {
+      // Register only the local model used for commit messages.
+      "api_url": "http://127.0.0.1:11434",
+      "auto_discover": false,
+      "available_models": [
+        {
+          "name": "qwen2.5-coder:7b-instruct",
+          "max_tokens": 32768,
+          "supports_tools": true
+        }
+      ]
+    }
+  },
+  "agent": {
+    "commit_message_model": {
+      "provider": "ollama",
+      "model": "qwen2.5-coder:7b-instruct"
+    },
+    "default_width": 640.0,
+    "button": true,
+    "default_profile": "ask",
+    "dock": "right",
+    "threads_sidebar": {
+      "position": "right",
+      "auto_open": true
+    },
+    "favorite_models": [],
+    "model_parameters": []
+  },
+  "edit_predictions": {
+    // Start Ollama to use local edit predictions.
+    "provider": "ollama",
+    "allow_data_collection": "no",
+    "ollama": {
+      "api_url": "http://127.0.0.1:11434",
+      "model": "qwen2.5-coder:7b-base"
+    }
+  },
+  "base_keymap": "JetBrains",
+  "auto_install_extensions": {
+    "jetbrains-icons": true
+  },
+  "icon_theme": "JetBrains Icons Dark",
+  "ui_font_family": "Inter Variable",
+  "ui_font_size": 14.0,
+  "ui_font_weight": 480,
+  "ui_font_features": { "calt": true, "liga": true },
+  "buffer_font_family": "JetBrains Mono",
+  "buffer_font_size": 12.0,
+  "buffer_font_weight": 400,
+  "buffer_font_features": { "calt": true, "liga": true },
+  "buffer_line_height": { "custom": 1.7 },
+  "semantic_tokens": "combined",
+  "global_lsp_settings": {
+    "semantic_token_rules": [
+      { "token_type": "function", "token_modifiers": ["declaration"], "style": ["function.definition"] },
+      { "token_type": "function", "token_modifiers": ["definition"], "style": ["function.definition"] },
+      { "token_type": "method", "token_modifiers": ["declaration"], "style": ["function.definition"] },
+      { "token_type": "method", "token_modifiers": ["definition"], "style": ["function.definition"] },
+      { "token_type": "method", "token_modifiers": ["static"], "style": ["function.method.static"] },
+      { "token_type": "property", "token_modifiers": ["static"], "style": ["property.static"] },
+      { "token_type": "variable", "token_modifiers": ["readonly"], "style": ["constant"] },
+    ],
+  },
+  "terminal": { "dock": "bottom",
+                "minimum_contrast": 0 },
+  "theme": "Fleet Dark - Edited",
+  "theme_overrides": {
+    "Fleet Dark - Edited": {
+      "background.appearance": "blurred",
+      "background": "#090909CC",
+      "title_bar.background": "#090909CC",
+      "title_bar.inactive_background": "#090909CC",
+      "status_bar.background": "#090909CC",
+      // Clear child surfaces avoid stacking opacity over the workspace background.
+      "surface.background": "#00000000",
+      "editor.background": "#00000000",
+      "editor.gutter.background": "#00000000",
+      "editor.subheader.background": "#00000000",
+      "panel.background": "#00000000",
+      "toolbar.background": "#00000000",
+      "tab_bar.background": "#00000000",
+      "terminal.background": "#00000000",
+      // Keep inverted terminal text and block-cursor text visible.
+      "terminal.ansi.background": "#090909",
+      "syntax": {
+        "comment": { "color": "#909192" },
+        "comment.doc": { "color": "#909192" },
+        "comment.documentation": { "color": "#909192" },
+        "string.doc": { "color": "#909192" }
+      },
+    },
+  },
+}

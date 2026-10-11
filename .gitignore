@@ -1,0 +1,10 @@
+# Keep the export limited to the files listed below.
+*
+!/.gitignore
+!/README.md
+!/settings.json
+!/keymap.json
+!/themes/
+!/themes/fleet-dark-edited.json
+!/snippets/
+!/snippets/python.json

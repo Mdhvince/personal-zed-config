@@ -1,0 +1,45 @@
+{
+  "Python main": {
+    "prefix": "main",
+    "body": [
+      "if __name__ == \"__main__\":",
+      "    $0"
+    ],
+    "description": "Python script entry point"
+  },
+  "Pytest parametrize": {
+    "prefix": "mark",
+    "body": [
+      "@pytest.mark.parametrize(\"param1, param2, expected\", [",
+      "    (\"\", \"\", \"\"),",
+      "    (\"\", \"\", \"\"),",
+      "    (\"\", \"\", \"\"),",
+      "])$0"
+    ],
+    "description": "Parametrize a pytest test with three cases"
+  },
+  "Patch object method": {
+    "prefix": "patch",
+    "body": [
+      "with patch.object(object, \"my_method\", return_value=\"\"):",
+      "    pass$0"
+    ],
+    "description": "Patch an object method in a context manager"
+  },
+  "Spark DataFrame": {
+    "prefix": "dsp",
+    "body": [
+      "schema = T.StructType([",
+      "    T.StructField(\"\", T.StringType(), True),",
+      "    T.StructField(\"\", T.StringType(), True),",
+      "])",
+      "df = spark.createDataFrame([",
+      "    (\"str1\", 34, 3),",
+      "    (\"str2\", 45, 5),",
+      "    (\"str3\", 29, 1),",
+      "    (\"str4\", 40, 2)], schema",
+      ")$0"
+    ],
+    "description": "Spark DataFrame template; adapt the schema to the rows"
+  }
+}
