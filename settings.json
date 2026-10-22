@@ -8,6 +8,10 @@
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
   "cli_default_open_behavior": "existing_window",
+  "scroll_beyond_last_line": "vertical_scroll_margin",
+  "vertical_scroll_margin": 1,
+  "show_wrap_guides": true,
+  "wrap_guides": [121],
   "toolbar": {
     "code_actions": false,
     "agent_review": true,
@@ -103,7 +107,7 @@
       "model": "qwen2.5-coder:7b-instruct"
     },
     "default_width": 640.0,
-    "button": true,
+    "button": false,
     "default_profile": "ask",
     "dock": "right",
     "threads_sidebar": {
@@ -128,7 +132,7 @@
   },
   "icon_theme": "JetBrains Icons Dark",
   "ui_font_family": "Inter Variable",
-  "ui_font_size": 14.0,
+  "ui_font_size": 15.0,
   "ui_font_weight": 480,
   "ui_font_features": { "calt": true, "liga": true },
   "buffer_font_family": "JetBrains Mono",
