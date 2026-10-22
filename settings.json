@@ -26,7 +26,9 @@
       "settings": {
         "basedpyright": {
           "analysis": {
-            "autoImportCompletions": false
+            "autoImportCompletions": true,
+            "typeCheckingMode": "basic",
+            "reportPrivateUsage": "none"
           }
         }
       }
@@ -38,13 +40,13 @@
         "show_background": false,
         "show_type_hints": true,
         "show_value_hints": true,
-        "enabled": false
+        "enabled": true
       },
       "remove_trailing_whitespace_on_save": true,
       "indent_guides": {
         "coloring": "fixed",
         "line_width": 1,
-        "enabled": true
+        "enabled": false
       },
       "preferred_line_length": 121
     }
@@ -95,6 +97,7 @@
     }
   },
   "agent": {
+    "commit_message_instructions": "Write a very short commit message, maximum 50 characters, without a period at the end, no markdown tags, plain text",
     "commit_message_model": {
       "provider": "ollama",
       "model": "qwen2.5-coder:7b-instruct"

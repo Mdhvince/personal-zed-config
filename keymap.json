@@ -20,7 +20,7 @@
   },
   {
     "bindings": {
-      "secondary-[": "agent::Toggle",
+      "cmd-[": "agent::Toggle",
       "secondary-]": "multi_workspace::ToggleWorkspaceSidebar"
     }
   },
