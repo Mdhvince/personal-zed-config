@@ -7,6 +7,7 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "diff_view_style": "split",
   "cli_default_open_behavior": "existing_window",
   "scroll_beyond_last_line": "vertical_scroll_margin",
   "vertical_scroll_margin": 1,
@@ -101,7 +102,7 @@
     }
   },
   "agent": {
-    "commit_message_instructions": "Write a very short commit message, maximum 50 characters, without a period at the end, no markdown tags, plain text",
+    "commit_message_instructions": "Write a short commit message, without a period at the end, no markdown tags, plain text. Add bullets points description that are straightforward and concise for every relevant only changes",
     "commit_message_model": {
       "provider": "ollama",
       "model": "flint"
