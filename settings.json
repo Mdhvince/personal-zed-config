@@ -93,7 +93,7 @@
       "auto_discover": false,
       "available_models": [
         {
-          "name": "qwen2.5-coder:7b-instruct",
+          "name": "flint",
           "max_tokens": 32768,
           "supports_tools": true
         }
@@ -104,7 +104,7 @@
     "commit_message_instructions": "Write a very short commit message, maximum 50 characters, without a period at the end, no markdown tags, plain text",
     "commit_message_model": {
       "provider": "ollama",
-      "model": "qwen2.5-coder:7b-instruct"
+      "model": "flint"
     },
     "default_width": 640.0,
     "button": false,
