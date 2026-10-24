@@ -102,7 +102,7 @@
     }
   },
   "agent": {
-    "commit_message_instructions": "Write a short commit message, without a period at the end, no markdown tags, plain text. Add bullets points description that are straightforward and concise for every relevant only changes",
+    "commit_message_instructions": "Follow these strict conventions: 1. The commit message must be ONE short sentence in English describing what the change does. 2. Use imperative mood (e.g., 'Add password reset endpoint', NOT 'Added' or 'Adds'). 3. Describe the change itself, NOT the process (e.g., 'Fix login redirect loop', NEVER 'Update views.py' or 'Address review comments'). 4. No body, no bullet lists. 5. FORBIDDEN: NEVER include 'Co-Authored-By', 'Generated with...', or any AI/tool attribution or session links. 6. Use ASD-STE100 Simplified Technical English. 7. Output plain text only, no markdown tags.",
     "commit_message_model": {
       "provider": "ollama",
       "model": "flint"
