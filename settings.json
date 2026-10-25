@@ -7,6 +7,7 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "show_edit_predictions": true,
   "diff_view_style": "split",
   "cli_default_open_behavior": "existing_window",
   "scroll_beyond_last_line": "vertical_scroll_margin",
@@ -120,6 +121,7 @@
   },
   "edit_predictions": {
     // Start Ollama to use local edit predictions.
+    "mode": "subtle",
     "provider": "ollama",
     "allow_data_collection": "no",
     "ollama": {
