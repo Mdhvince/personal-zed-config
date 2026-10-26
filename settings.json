@@ -97,7 +97,10 @@
         {
           "name": "flint",
           "max_tokens": 32768,
-          "supports_tools": true
+          "supports_tools": true,
+          // Commit messages need no reasoning. Without this flag Zed sends
+          // "think": null, and Flint spends 300-450 tokens on reasoning.
+          "supports_thinking": false
         }
       ]
     }
