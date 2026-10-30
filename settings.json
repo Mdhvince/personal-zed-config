@@ -163,11 +163,10 @@
   "theme": "Fleet Dark - Edited",
   "theme_overrides": {
     "Fleet Dark - Edited": {
-      "background.appearance": "blurred",
-      "background": "#090909CC",
-      "title_bar.background": "#090909CC",
-      "title_bar.inactive_background": "#090909CC",
-      "status_bar.background": "#090909CC",
+      "background": "#090909",
+      "title_bar.background": "#090909",
+      "title_bar.inactive_background": "#090909",
+      "status_bar.background": "#090909",
       // Clear child surfaces avoid stacking opacity over the workspace background.
       "surface.background": "#00000000",
       "editor.background": "#00000000",
