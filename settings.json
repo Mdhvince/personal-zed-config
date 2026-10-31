@@ -44,7 +44,7 @@
     "Python": {
       "inlay_hints": {
         "show_background": false,
-        "show_type_hints": true,
+        "show_type_hints": false,
         "show_value_hints": true,
         "enabled": true
       },
